@@ -3,25 +3,32 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 class Main {
+    // Command that we want to execute in terminal
+    // Ealier "bash t.sh"
+    private final static String command = "bash vcgencmd measure_temp | grep -zoP '[0-9]+.[0-9]+'";
+
     public static void main(String[] args) throws IOException {
-        ServerSocket ss = new ServerSocket(7778);
+        // Creating server socket
+        ServerSocket serverSocket = new ServerSocket(7778);
+        // Infinite loop
         while (true) {
             try {
-                Socket socket = ss.accept();
+                // Accepting connection
+                Socket socket = serverSocket.accept();
                 String linuxCommandResult = "";
-                Process p = Runtime.getRuntime().exec("bash t.sh");
-
+                // Executing command
+                Process p = Runtime.getRuntime().exec(command);
+                // Getting command output and sending it to client
                 BufferedReader stdInput = new BufferedReader(new InputStreamReader(p.getInputStream()));
                 while ((linuxCommandResult = stdInput.readLine()) != null) {
-
                     OutputStream outputStream = socket.getOutputStream();
-                    // create an object output stream from the output stream so we can send an object through it
+                    // Create an object output stream from the output stream so we can send an object through it
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
+                    // Convert to double because we should get string like "40.0"
                     objectOutputStream.writeObject(Double.valueOf(linuxCommandResult));
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                continue;
             }
         }
 
