@@ -5,7 +5,7 @@ import java.net.Socket;
 class Main {
     // Command that we want to execute in terminal
     // Ealier "bash t.sh"
-    private final static String command = "bash vcgencmd measure_temp | grep -zoP '[0-9]+.[0-9]+'";
+    private final static String command = "vcgencmd measure_temp | grep -zoP '[0-9]+.[0-9]+'";
 
     public static void main(String[] args) throws IOException {
         // Creating server socket
