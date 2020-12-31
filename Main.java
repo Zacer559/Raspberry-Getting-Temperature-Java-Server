@@ -4,8 +4,7 @@ import java.net.Socket;
 
 class Main {
     // Command that we want to execute in terminal
-    // Ealier "bash t.sh"
-    private final static String command = "vcgencmd measure_temp | grep -zoP '[0-9]+.[0-9]+'";
+    private final static String command = "bash GetTemperature.sh";
 
     public static void main(String[] args) throws IOException {
         // Creating server socket
@@ -25,6 +24,7 @@ class Main {
                     // Create an object output stream from the output stream so we can send an object through it
                     ObjectOutputStream objectOutputStream = new ObjectOutputStream(outputStream);
                     // Convert to double because we should get string like "40.0"
+           
                     objectOutputStream.writeObject(Double.valueOf(linuxCommandResult));
                 }
             } catch (Exception e) {
